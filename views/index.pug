@@ -14,6 +14,10 @@ block content
       form(method='POST' action='/delete')
         input(type='hidden', name='id', value=val.id)
         button(type='submit') Delete
+      form(method='POST' action='/edit')
+        input(type='hidden', name='id', value=val.id)
+        input(type='input', name='task', value="")
+        button(type='submit') Submit edit
 
   hr
   h2 Add a new task

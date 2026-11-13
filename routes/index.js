@@ -53,4 +53,22 @@ router.post('/delete', function (req, res, next) {
     }
 });
 
+router.post('/edit', function (req, res, next) {
+    const { task, id } = req.body;
+    try {
+      req.db.query('UPDATE todos SET task = ? WHERE id = ?;', [task, id], (err, results) => {
+        if (err) {
+          console.error('Error editing todo:', err);
+          return res.status(500).send('Error editing todo');
+        }
+        console.log('Todo edited successfully:', results);
+        // Redirect to the home page after deletion
+        res.redirect('/');
+    });
+    }catch (error) {
+        console.error('Error deleting todo:', error);
+        res.status(500).send('Error deleting todo:');
+    }
+});
+
 module.exports = router;
