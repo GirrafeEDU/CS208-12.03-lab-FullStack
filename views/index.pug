@@ -8,16 +8,23 @@ block content
     li
       span= val.task + ' - '
       if val.completed > 0
-        span Completed
+        span.completed Completed
       else
-        span Not Completed
+        span.incomplete Not Completed
       form(method='POST' action='/delete')
         input(type='hidden', name='id', value=val.id)
         button(type='submit') Delete
+      form(method='POST' action='/complete')
+        input(type='hidden', name='id', value=val.id)
+        button(type='submit') Swap Completed
       form(method='POST' action='/edit')
         input(type='hidden', name='id', value=val.id)
-        input(type='input', name='task', value="")
+
+        label(for=`task-${val.id}`) Edit task:
+        input(type='text', id=`task-${val.id}`, name='task', required)
+
         button(type='submit') Submit edit
+      
 
   hr
   h2 Add a new task

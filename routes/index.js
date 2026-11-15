@@ -19,6 +19,9 @@ router.get('/', function(req, res, next){
 
 router.post('/create', function (req, res, next) {
     const { task } = req.body;
+     if (!task || task.trim() === '') {
+        return res.status(400).send('Task cannot be empty');
+    }
     try {
       req.db.query('INSERT INTO todos (task) VALUES (?);', [task], (err, results) => {
         if (err) {
@@ -69,6 +72,23 @@ router.post('/edit', function (req, res, next) {
         console.error('Error deleting todo:', error);
         res.status(500).send('Error deleting todo:');
     }
+});
+
+router.post('/complete', function (req, res) {
+  const { id } = req.body;
+
+  req.db.query(
+    'UPDATE todos SET completed = NOT completed WHERE id = ?;',
+    [id],
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error toggling todo');
+      }
+
+      res.redirect('/');
+    }
+  );
 });
 
 module.exports = router;
